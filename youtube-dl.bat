@@ -1,3 +1,3 @@
 @echo off
 cd /d %~dp0
-python youtubedl.py %1
+python ytdlp.py %1
