@@ -1,3 +1,3 @@
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.sendMessage(tab.id, "Action");
-});
+chrome.tabs.onUpdated.addListener(function(e){
+	console.log('aaaaaaa');
+})
