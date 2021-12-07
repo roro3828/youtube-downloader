@@ -10,11 +10,19 @@ function main(){
 
 function when_loaded(){
     let menu=document.getElementById('menu-container').querySelector('#top-level-buttons-computed');
-    let download_button=document.createElement('button');
-    download_button.type="button";
-    download_button.setAttribute('onclick',"location.href='youtube-dl:"+getParam('v')+"'");
-    download_button.innerHTML="動画をダウンロード";
-    menu.appendChild(download_button);
+    let download_menu=document.createElement('ul');
+
+    download_menu.innerHTML="<li>\
+    <a href='youtube-dl://video?"+getParam('v')+"'>動画をダウンロード</a>\
+        <ul>\
+            <li>\
+                <a href='youtube-dl://audio?"+getParam('v')+"'>音声をダウンロード</a>\
+            </li>\
+        </ul>\
+    </li>"
+    download_menu.style="box-sizing: border-box;"
+
+    menu.appendChild(download_menu);
     let config={
         childList:true
     }
