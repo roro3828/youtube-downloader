@@ -13,13 +13,23 @@ function when_loaded(){
     let download_menu=document.createElement('ul');
 
     download_menu.innerHTML="<li>\
-    <a href='youtube-dl://video?"+getParam('v')+"'>動画をダウンロード</a>\
+    <a href='youtube-dl://video?"+getParam('v')+"' class='download-button'>動画をダウンロード</a>\
         <ul>\
             <li>\
-                <a href='youtube-dl://audio?"+getParam('v')+"'>音声をダウンロード</a>\
+                <a href='youtube-dl://audio?"+getParam('v')+"' class='download-button'>音声をダウンロード</a>\
             </li>\
         </ul>\
-    </li>"
+    </li>\
+    <style>\
+    .download-button{\
+        text-decoration:none;\
+        color:#FFFFFF;\
+        white-space:nowrap\
+    }\
+    .download-button:hover{\
+        color:#bdbdbd\
+    }\
+    </style>"
     download_menu.style="box-sizing: border-box;"
 
     menu.appendChild(download_menu);
