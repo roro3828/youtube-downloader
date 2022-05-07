@@ -8,22 +8,32 @@ function main(){
     }
 }
 
+function change_color(){
+    const theme=document.getElementsByName('theme-color')[0].getAttribute("content");
+    let color="#FFFFFF";
+    if(theme=="rgba(255,255,255,0.98)"){
+        color="#000000";
+    }
+}
+
 function when_loaded(){
     let menu=document.getElementById('menu-container').querySelector('#top-level-buttons-computed');
     let download_menu=document.createElement('ul');
+    const theme=document.getElementsByName('theme-color')[0].getAttribute("content");
+    let color="#FFFFFF";
+    if(theme=="rgba(255,255,255,0.98)"){
+        color="#000000";
+    }
 
-    download_menu.innerHTML="<li>\
-    <a href='youtube-dl://video?"+getParam('v')+"' class='download-button'>動画をダウンロード</a>\
-        <ul>\
-            <li>\
-                <a href='youtube-dl://audio?"+getParam('v')+"' class='download-button'>音声をダウンロード</a>\
-            </li>\
-        </ul>\
-    </li>\
+    download_menu.innerHTML="<div>\
+        <a href='youtube-dl://video?"+getParam('v')+"' class='download-button'>動画をダウンロード</a>\
+        <br>\
+        <a href='youtube-dl://audio?"+getParam('v')+"' class='download-button'>音声をダウンロード</a>\
+    </div>\
     <style>\
     .download-button{\
         text-decoration:none;\
-        color:#FFFFFF;\
+        color:"+color+";\
         white-space:nowrap\
     }\
     .download-button:hover{\
@@ -39,10 +49,10 @@ function when_loaded(){
     observer.observe(menu,config);
 }
 const observer=new MutationObserver(
-function(){
-    main();
-    observer.disconnect();
-}
+    function(){
+        main();
+        observer.disconnect();
+    }
 )
 main();
 
