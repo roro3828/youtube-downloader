@@ -8,14 +8,17 @@
         {
             "matches": ["https://www.youtube.com/*"],
             "js": [
-                "main.js"
+                "js/youtube.js"
+            ],
+            "css":[
+                "css/youtube.css"
             ],
             "run_at":"document_end"
         },
         {
             "matches": ["https://music.youtube.com/*"],
             "js": [
-                "music.js"
+                "js/music.js"
             ],
             "run_at":"document_end"
         }

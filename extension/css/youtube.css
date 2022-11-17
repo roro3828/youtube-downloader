@@ -1,0 +1,17 @@
+.youtube_download_button{
+    border: 2px solid transparent;
+    background:transparent;
+    cursor:pointer;
+    text-decoration: none;
+    font-size: 1.3em;
+    text-align: center;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    color:rgb(241, 241, 241);
+}
+.youtube_download_button:hover{
+    background-color: rgb(62, 62, 62);
+}
+.youtube_download_button:active{
+    background-color: rgb(83,83,83);
+}

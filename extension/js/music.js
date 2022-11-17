@@ -20,6 +20,7 @@ function change_color(){
 function when_loaded(){
     let menu=document.getElementsByClassName("middle-controls style-scope ytmusic-player-bar")[0];
     let link=document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
+    console.log("aaaaaaaaaaaa");
     
     //const theme=document.getElementByName('theme-color').getAttribute("content");
     let color="#FFFFFF";
@@ -30,7 +31,7 @@ function when_loaded(){
         let download_menu=document.createElement('ul');
         download_menu.className="download-menu";
         download_menu.innerHTML="<div>\
-            <a target='_blank' href='youtube-dl://audio?"+getParam('v',link.href)+"' class='download-button'>曲をダウンロード</a>\
+            <a onclick='window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");' class='download-button'>曲をダウンロード</a>\
             </div>\
             <style>\
                 .download-button{\
@@ -46,7 +47,8 @@ function when_loaded(){
         menu.appendChild(download_menu);
     }
     else{
-        document.getElementsByClassName("download-button")[0].href="youtube-dl://audio?"+getParam('v',link.href);
+        //document.getElementsByClassName("download-button")[0].onclick="window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");";
+        document.getElementsByClassName("download-button")[0].setAttribute("onclick","window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");");
     }
 
     let config={
