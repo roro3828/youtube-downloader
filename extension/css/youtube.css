@@ -28,6 +28,6 @@
 .youtube_download_button.dark:active{
     background-color: rgb(83,83,83);
 }
-.youtube_download_button.dark:active{
+.youtube_download_button.light:active{
     background-color: rgb(204,204,204);
 }
