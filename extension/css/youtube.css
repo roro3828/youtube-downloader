@@ -9,9 +9,25 @@
     padding-bottom: 0.3em;
     color:rgb(241, 241, 241);
 }
-.youtube_download_button:hover{
+
+.youtube_download_button.dark{
+    color:rgb(241, 241, 241);
+}
+
+.youtube_download_button.light{
+    color:rgb(15, 15, 15);
+}
+
+.youtube_download_button.dark:hover{
     background-color: rgb(62, 62, 62);
 }
-.youtube_download_button:active{
+.youtube_download_button.light:hover{
+    background-color: rgb(229, 229, 229);
+}
+
+.youtube_download_button.dark:active{
     background-color: rgb(83,83,83);
+}
+.youtube_download_button.dark:active{
+    background-color: rgb(204,204,204);
 }

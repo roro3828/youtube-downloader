@@ -30,24 +30,39 @@ function when_loaded(){
         b.click();
         let popup_renderer=document.querySelector("ytd-menu-popup-renderer");
         if(popup_renderer.querySelector(".youtube_download_button")==null){
+            //ダークモードかライトモードか
+            let theme;
+            if(is_theme_light()){
+                theme="light";
+            }
+            else{
+                theme="dark";
+            }
+
             let download_button=document.createElement("button");
-            download_button.className="youtube_download_button";
+            download_button.className="youtube_download_button "+theme;
             download_button.innerText="ダウンロード";
             download_button.value="ダウンロード";
             download_button.addEventListener("click",download_button_click("video"),true);
             popup_renderer.appendChild(download_button);
 
             let audio_download=document.createElement("button");
-            audio_download.className="youtube_download_button";
-            audio_download.innerText="音声のみダウンロード";
+            audio_download.className="youtube_download_button "+theme;
+            audio_download.innerText="音声のみ";
             audio_download.value="ダウンロード";
             audio_download.addEventListener("click",download_button_click("audio"),true);
             popup_renderer.appendChild(audio_download);
         }
+        else if(getParam("v")==null){
+            let buttons=document.querySelectorAll(".youtube_download_button");
+            for(var i=0;i<buttons.length;i++){
+                buttons[i].remove();
+            }
+        }
     }
 
     //メタデータが変更されたら実行
-    observer.observe(metadata,{attributeFilter:["video-id"]});
+    observer.observe(metadata,{attributes:true});
 }
 const observer=new MutationObserver(
     function(){
