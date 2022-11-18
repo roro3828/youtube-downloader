@@ -20,6 +20,9 @@
             "js": [
                 "js/music.js"
             ],
+            "css":[
+                "css/youtube.css"
+            ],
             "run_at":"document_end"
         }
     ],

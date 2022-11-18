@@ -10,6 +10,11 @@
     color:rgb(241, 241, 241);
 }
 
+.youtube_download_button.dark.youtube_music{
+    padding-left: 6em;
+    padding-right: 6em;
+}
+
 .youtube_download_button.dark{
     color:rgb(241, 241, 241);
 }

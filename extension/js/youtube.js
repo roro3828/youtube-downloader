@@ -23,9 +23,8 @@ function when_loaded(){
     let metadata=document.querySelector("ytd-watch-metadata");
     //window.alert(metadata.getAttribute("video-id"));
 
-    //メニュー(...を押したときに出てくるやつ)を取得
     let menu=metadata.querySelector("ytd-menu-renderer");
-    //なかった場合出現させるボタンをダブルクリックして生成
+
     if(menu!=null){
         let option_button=menu.querySelector('yt-button-shape[version]');
         option_button.querySelector("button").click();

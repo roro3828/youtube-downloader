@@ -1,7 +1,7 @@
 function main(){
     const timer=setInterval(loaded,10);
     function loaded(){
-        if(document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0]!=null){
+        if(document.querySelector(".ytp-title-link")!=null){
             clearInterval(timer);
             when_loaded();
             //window.alert("test");
@@ -9,52 +9,20 @@ function main(){
     }
 }
 
-function change_color(){
-    const theme=document.getElementsByName('theme-color')[0].getAttribute("content");
-    let color="#FFFFFF";
-    if(theme=="rgba(255,255,255,0.98)"){
-        color="#000000";
-    }
-}
-
 function when_loaded(){
-    let menu=document.getElementsByClassName("middle-controls style-scope ytmusic-player-bar")[0];
-    let link=document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
-    console.log("aaaaaaaaaaaa");
-    
-    //const theme=document.getElementByName('theme-color').getAttribute("content");
-    let color="#FFFFFF";
-    //let video_id=getParam("v",document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0].getAttribute("href"));
-    //window.alert(link.href);
+    let link=document.querySelector(".ytp-title-link");
+    let menu=document.querySelector("ytmusic-player-bar");
 
-    if(document.getElementsByClassName("download-menu")[0]==null){
-        let download_menu=document.createElement('ul');
-        download_menu.className="download-menu";
-        download_menu.innerHTML="<div>\
-            <a onclick='window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");' class='download-button'>曲をダウンロード</a>\
-            </div>\
-            <style>\
-                .download-button{\
-                    text-decoration:none;\
-                    color:"+color+";\
-                    white-space:nowrap\
-                }\
-                .download-button:hover{\
-                    color:#bdbdbd\
-                }\
-            </style>";
-        download_menu.style="box-sizing: border-box;";
-        menu.appendChild(download_menu);
-    }
-    else{
-        //document.getElementsByClassName("download-button")[0].onclick="window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");";
-        document.getElementsByClassName("download-button")[0].setAttribute("onclick","window.open(\"youtube-dl://audio?"+getParam('v',link.href)+"\",\"subwin\",\"width=1,height=1\");");
+    const timer=setInterval(loaded,10);
+    function loaded(){
+        if(menu.querySelector("tp-yt-paper-icon-button.ytmusic-menu-renderer")!=null){
+            clearInterval(timer);
+            wait_for_button();
+            //window.alert("test");
+        }
     }
 
-    let config={
-        attributes:true
-    }
-    observer.observe(link,config);
+    observer.observe(link,{attributes:true});
 }
 const observer=new MutationObserver(
     function(){
@@ -62,6 +30,55 @@ const observer=new MutationObserver(
         observer.disconnect();
     }
 )
+
+function wait_for_button(){
+    let option_button=document.querySelector("ytmusic-player-bar").querySelector("tp-yt-paper-icon-button.ytmusic-menu-renderer");
+    if(option_button!=null){
+        option_button.click();
+        option_button.click();
+        option_button.addEventListener("click",menu_button_click);
+    }
+}
+
+//...ボタンを押したとき実行
+function menu_button_click(){
+    //ダウンロードする動画のid
+    let video_id=getParam("v",document.querySelector(".ytp-title-link").href);
+
+    //メニュー(...を押したときに出てくるやつ)を取得
+    let popup_renderer=document.querySelector("ytmusic-menu-popup-renderer");
+
+    //ダウンロードボタンが存在しなければ生成
+    if(popup_renderer.querySelector(".youtube_download_button")==null){
+
+        //ダウンロードボタン生成
+        let audio_download=document.createElement("button");
+        audio_download.className="youtube_download_button dark youtube_music";
+        audio_download.innerText="ダウンロード";
+        audio_download.value="ダウンロード";
+        audio_download.setAttribute("video_id",video_id);
+        audio_download.addEventListener("click",download_button_click("audio"),true);
+        popup_renderer.querySelector("tp-yt-paper-listbox").appendChild(audio_download);
+    }
+    //ダウンロードボタンが存在していればダウンロードする動画のidを更新
+    else{
+        let buttons=popup_renderer.querySelectorAll(".youtube_download_button");
+        for(let i=0;i<buttons.length;i++){
+            buttons[i].setAttribute("video_id",video_id);
+        }
+    }
+}
+
+//ダウンロードボタンが押されたときに実行
+function download_button_click(mode){
+    return function(ev){
+        let video_id=document.querySelector(".youtube_download_button").getAttribute("video_id");
+        //メニューを閉じる
+        document.body.click();
+        window.open("youtube-dl://"+mode+"?"+video_id);
+        
+    }
+}
 main();
 
 function getParam(name,url){
