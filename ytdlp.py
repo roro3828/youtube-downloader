@@ -12,7 +12,7 @@ option,id=sys.argv[1].split('?')
 option=option.split('/')[2]
 ydl_opts={
     'outtmpl':home+r'\Downloads\%(title)s.%(ext)s',
-    'cookiefile':cookiefile,
+    'cookiesfrombrowser':('chrome','default'),
     'writethumbnail':True,
     'postprocessors':[
         {
