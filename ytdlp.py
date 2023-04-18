@@ -1,14 +1,18 @@
 import yt_dlp
 import sys
-from os.path import expanduser
-import path
+from os.path import expanduser,exists
 home=expanduser("~")
+
+if exists("cookies.txt"):
+    cookiefile="cookies.txt"
+else:
+    cookiefile=None
 
 option,id=sys.argv[1].split('?')
 option=option.split('/')[2]
 ydl_opts={
     'outtmpl':home+r'\Downloads\%(title)s.%(ext)s',
-    'cookiefile':path.cookiefile,
+    'cookiefile':cookiefile,
     'writethumbnail':True,
     'postprocessors':[
         {
