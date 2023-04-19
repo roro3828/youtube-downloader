@@ -32,30 +32,73 @@ function when_loaded(){
         option_button.addEventListener("click",menu_button_click);
     }
 
-    //関連動画欄が読み込まれるまで待機
-    const timer=setInterval(loaded,10);
-    function loaded(){
-        if(document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer")!=null){
-            clearInterval(timer);
-            let contents=document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer").querySelector("#contents");
-
-            suggest_observer.observe(contents,{childList:true});
+    if(getParam("v")){
+        //関連動画欄が読み込まれるまで待機
+        const timer=setInterval(loaded,10);
+        function loaded(){
+            if(document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer")!=null){
+                clearInterval(timer);
+                let contents=document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer").querySelector("#contents");
+                suggest_videos();
+                suggest_observer.observe(contents,{childList:true});
+            }
+        }
+    }
+    else{
+        //window.alert("abb");
+        //おすすめ動画が読み込まれるまで待機
+        const timer=setInterval(loaded,10);
+        function loaded(){
+            if(document.querySelector("ytd-browse")!=null){
+                clearInterval(timer);
+                let contents=document.querySelector("ytd-browse").querySelectorAll("#contents")[0];
+                suggest_videos();
+                suggest_observer.observe(contents,{childList:true});
+            }
         }
     }
 
     observer.observe(metadata,{attributes:true});
 }
 
-//関連動画
+//関連動画かおすすめ動画
 function suggest_videos(){
-    let contents=document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer").querySelector("#contents");
-    if(contents!=null){
-        let videos=contents.querySelectorAll("ytd-compact-video-renderer");
-        for(let i=0;i<videos.length;i++){
-            let video_data=videos[i].querySelector("div.details");
-            if(videos[i].getAttribute("button_set")==null){
-                videos[i].setAttribute("button_set",true);
-                video_data.querySelector("yt-icon-button").addEventListener("click",menu_button_click);
+    //window.alert("aaa");
+    if(getParam("v")){
+        let contents=document.querySelector("ytd-item-section-renderer.ytd-watch-next-secondary-results-renderer").querySelector("#contents");
+        if(contents!=null){
+            let videos=contents.querySelectorAll("ytd-compact-video-renderer");
+            for(let i=0;i<videos.length;i++){
+                let video_data=videos[i].querySelector("div.details");
+                let video_id=getParam("v",video_data.querySelector("a").href);
+                let icon_button=video_data.querySelector("yt-icon-button");
+                if(videos[i].getAttribute("button_set")==null){
+                    videos[i].setAttribute("button_set",true);
+                    icon_button.addEventListener("click",menu_button_click);
+                }
+                icon_button.setAttribute("video_id",video_id);
+            }
+        }
+    }
+    else{
+        let contents=document.querySelector("ytd-browse").querySelector("#contents");
+        if(contents!=null){
+            let videos=contents.querySelectorAll("ytd-rich-item-renderer");
+            for(let i=0;i<videos.length;i++){
+                let video_data=videos[i].querySelector("#details");
+                if(video_data==null){
+                    continue;
+                }
+                let video_id=null;
+                if(video_data.querySelector("#video-title-link")){
+                    video_id=getParam("v",video_data.querySelector("#video-title-link").href);
+                }
+                let icon_button=video_data.querySelector("yt-icon-button");
+                if(videos[i].getAttribute("button_set")==null){
+                    videos[i].setAttribute("button_set",true);
+                    icon_button.addEventListener("click",menu_button_click);
+                }
+                icon_button.setAttribute("video_id",video_id);
             }
         }
     }
@@ -63,8 +106,8 @@ function suggest_videos(){
 
 const observer=new MutationObserver(
     function(){
-        main();
         observer.disconnect();
+        main();
     }
 )
 
@@ -80,7 +123,7 @@ function menu_button_click(){
     //ダウンロードする動画のid
     let video_id=getParam("v");
     if(this.tagName.toLowerCase()=="yt-icon-button"){
-        video_id=getParam("v",this.parentNode.parentNode.parentNode.querySelector("a").href);
+        video_id=this.getAttribute("video_id");
     }
 
     //メニュー(...を押したときに出てくるやつ)を取得
